@@ -37,6 +37,7 @@ from db import (
     record_result,
     update_account,
 )
+from settings import load_settings, save_settings
 
 app = FastAPI(title="Auto-Deploy Relay", version="0.1.0")
 
@@ -242,6 +243,18 @@ async def api_stats():
         "by_provider": by_provider,
         "recent_requests": REQUEST_LOG[-50:],
     }
+
+
+# ---- Live settings (dashboard writes, registration reads) ----
+
+@app.get("/api/settings")
+async def api_get_settings():
+    return load_settings()
+
+
+@app.put("/api/settings")
+async def api_put_settings(payload: dict[str, Any]):
+    return save_settings(payload)
 
 
 def _validate_creds(provider: str, auth_type: str, creds: dict[str, Any]) -> None:

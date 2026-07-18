@@ -13,7 +13,9 @@
 
 services:
   relay:
-    build: ./relay
+    build:
+      context: .
+      dockerfile: relay/Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -21,31 +23,34 @@ services:
     restart: unless-stopped
 
   dashboard:
-    build: ./dashboard
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
     ports:
       - "8080:8080"
     environment:
       RELAY_URL: "http://relay:8000"
+      REG_URL: "http://registration:8001"
     depends_on:
       - relay
+      - registration
     restart: unless-stopped
 
   registration:
-    build: ./registration
+    build:
+      context: .
+      dockerfile: registration/Dockerfile
+    ports:
+      - "8001:8001"
     volumes:
       - data:/data
     environment:
       DB_PATH: "/data/accounts.db"
-      MAIL_BACKEND: "${MAIL_BACKEND:-local}"
-      REG_PROXY: "${REG_PROXY:-}"
-      SMS_API_KEY: "${SMS_API_KEY:-}"
-      SMS_COUNTRY: "${SMS_COUNTRY:-us}"
-      HEADLESS: "${HEADLESS:-true}"
+      PYTHONPATH: "/app"
+      MODE: "server"
     depends_on:
       - relay
-    restart: "no"
-    profiles:
-      - reg
+    restart: unless-stopped
 
 volumes:
   data:

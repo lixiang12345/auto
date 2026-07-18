@@ -9,15 +9,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY requirements.txt .
+COPY registration/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Playwright browsers
 RUN playwright install --with-deps chromium || playwright install chromium
 
-COPY . /app/registration
-COPY ../shared /app/shared
+COPY registration/ ./registration/
+COPY shared/ ./shared/
 
+ENV PYTHONPATH=/app/registration:/app/shared
 ENV DB_PATH=/data/accounts.db
 ENV MODE=server
 VOLUME /data

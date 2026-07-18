@@ -33,8 +33,7 @@
   .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 22px 64px; }
 
   header.top {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 26px;
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;
   }
   .brand { display: flex; align-items: center; gap: 12px; }
   .logo {
@@ -57,6 +56,17 @@
     70% { box-shadow: 0 0 0 7px rgba(61,220,151,0); }
     100% { box-shadow: 0 0 0 0 rgba(61,220,151,0); }
   }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 6px; margin-bottom: 22px; background: var(--panel);
+    border: 1px solid var(--border); padding: 5px; border-radius: 12px; width: fit-content; }
+  .tab { padding: 9px 18px; border-radius: 9px; font-size: 13.5px; cursor: pointer;
+    color: var(--muted); border: none; background: transparent; font-weight: 600; transition: .15s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
+    box-shadow: 0 4px 14px rgba(124,92,255,.35); }
+  .view { display: none; }
+  .view.active { display: block; }
 
   .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
   @media (max-width: 860px){ .cards { grid-template-columns: repeat(2,1fr); } }
@@ -89,7 +99,7 @@
     display:flex; align-items:center; justify-content: space-between; color: var(--text);
   }
   .panel h2 .hint { font-size: 11.5px; color: var(--muted); font-weight: 400; }
-  .panel .body { padding: 8px 14px 14px; }
+  .panel .body { padding: 14px 18px 18px; }
 
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th, td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--border); }
@@ -103,8 +113,7 @@
   .s-pending { background: rgba(138,150,173,.16); color: var(--muted); }
   .row-actions button {
     background: transparent; border: 1px solid var(--border); color: var(--muted);
-    border-radius: 8px; padding: 4px 9px; font-size: 11.5px; cursor: pointer; margin-right:4px;
-    transition: .15s;
+    border-radius: 8px; padding: 4px 9px; font-size: 11.5px; cursor: pointer; margin-right:4px; transition: .15s;
   }
   .row-actions button:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -117,8 +126,8 @@
   .log .fail { color: var(--red); }
   .log .ts { color: #4d5872; }
 
-  /* Add account form */
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  /* Forms */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-grid .full { grid-column: 1 / -1; }
   label { font-size: 11.5px; color: var(--muted); display:block; margin-bottom: 5px; }
   input, select, textarea {
@@ -127,7 +136,7 @@
     font-family: inherit; outline: none; transition: .15s;
   }
   input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(110,168,254,.15); }
-  textarea { resize: vertical; min-height: 70px; font-family: ui-monospace, Menlo, monospace; }
+  textarea { resize: vertical; min-height: 64px; font-family: ui-monospace, Menlo, monospace; }
   .btn {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: #fff; border: none; border-radius: 10px; padding: 11px 16px; font-size: 13.5px;
@@ -137,6 +146,15 @@
   .btn:hover { filter: brightness(1.07); }
   .btn:active { transform: translateY(1px); }
   .btn.ghost { background: var(--panel-2); box-shadow:none; border:1px solid var(--border); color: var(--text); }
+  .btn.sm { width: auto; padding: 8px 14px; margin-top: 0; }
+
+  .sec-title { font-size: 12px; color: var(--muted); margin: 18px 2px 10px; letter-spacing:.4px;
+    text-transform: uppercase; }
+  .sect-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  .sect-card h3 { margin: 0 0 12px; font-size: 14px; display:flex; align-items:center; gap:8px; }
+  .sect-card h3 .tag { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; font-weight:600; }
+  .tag-miss { background: rgba(255,180,84,.14); color: var(--amber); }
+  .tag-ok { background: rgba(61,220,151,.14); color: var(--green); }
 
   .toast {
     position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -147,9 +165,19 @@
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   .toast.ok { border-color: var(--green); }
   .toast.err { border-color: var(--red); }
-
   .empty { color: var(--muted); text-align:center; padding: 26px; font-size: 13px; }
-  .sec-title { font-size: 12px; color: var(--muted); margin: 18px 2px 10px; letter-spacing:.4px; }
+
+  /* registration live feed */
+  .feed { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px;
+    background: #0a0d14; border-radius: 10px; padding: 12px; height: 360px; overflow-y: auto;
+    color: #b9c4d8; line-height: 1.6; }
+  .feed .step { color: var(--accent); }
+  .feed .ok { color: var(--green); }
+  .feed .fail { color: var(--red); }
+  .feed .warn { color: var(--amber); }
+  .feed .ts { color: #4d5872; }
+  .progressbar { height: 6px; background: var(--bg-soft); border-radius: 999px; overflow: hidden; margin: 10px 0; }
+  .progressbar > div { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0%; transition: width .4s; }
 </style>
 </head>
 <body>
@@ -165,198 +193,295 @@
     <div class="live"><span class="dot"></span><span id="liveText">实时连接中</span></div>
   </header>
 
-  <section class="cards" id="cards"></section>
+  <div class="tabs">
+    <button class="tab active" onclick="show('overview')">概览</button>
+    <button class="tab" onclick="show('register')">批量注册</button>
+    <button class="tab" onclick="show('settings')">设置</button>
+  </div>
 
-  <div class="grid2">
-    <div class="panel">
-      <h2>账号池 <span class="hint" id="accCount"></span></h2>
-      <div class="body">
-        <table>
-          <thead>
-            <tr><th>Provider</th><th>标识</th><th>状态</th><th>成功率</th><th>来源</th><th></th></tr>
-          </thead>
-          <tbody id="accBody"></tbody>
-        </table>
-        <div class="empty" id="accEmpty" style="display:none">暂无账号 — 在右侧添加或等待注册模块推送</div>
-      </div>
-    </div>
-
-    <div>
+  <!-- ============ OVERVIEW ============ -->
+  <section class="view active" id="view-overview">
+    <section class="cards" id="cards"></section>
+    <div class="grid2">
       <div class="panel">
-        <h2>接入账号</h2>
+        <h2>账号池 <span class="hint" id="accCount"></span></h2>
         <div class="body">
-          <div class="form-grid">
-            <div>
-              <label>Provider</label>
-              <select id="f_provider">
-                <option value="claude">Claude</option>
-                <option value="codex">Codex / OpenAI</option>
-                <option value="gemini">Gemini</option>
-                <option value="grok">Grok</option>
-              </select>
-            </div>
-            <div>
-              <label>Auth 类型</label>
-              <select id="f_auth">
-                <option value="apikey">API Key</option>
-                <option value="oauth">OAuth Token</option>
-              </select>
-            </div>
-            <div class="full">
-              <label>标识 / 邮箱（可选）</label>
-              <input id="f_email" placeholder="user@example.com" />
-            </div>
-            <div class="full">
-              <label id="lbl_creds">凭据 JSON</label>
-              <textarea id="f_creds" placeholder='{"api_key": "sk-..."}'></textarea>
-            </div>
-            <div class="full">
-              <label>代理（可选）</label>
-              <input id="f_proxy" placeholder="http://user:pass@host:port" />
-            </div>
-          </div>
-          <button class="btn" onclick="addAccount()">＋ 接入账号</button>
-          <button class="btn ghost" onclick="importCsv()">⬆ 从注册模块 CSV 导入</button>
+          <table>
+            <thead><tr><th>Provider</th><th>标识</th><th>状态</th><th>成功率</th><th>来源</th><th></th></tr></thead>
+            <tbody id="accBody"></tbody>
+          </table>
+          <div class="empty" id="accEmpty" style="display:none">暂无账号 — 去「批量注册」或右侧接入</div>
         </div>
       </div>
-
-      <div class="panel" style="margin-top:18px">
-        <h2>实时请求流 <span class="hint">最近 50 条</span></h2>
-        <div class="body"><div class="log" id="log"></div></div>
+      <div>
+        <div class="panel">
+          <h2>接入账号</h2>
+          <div class="body">
+            <div class="form-grid">
+              <div><label>Provider</label>
+                <select id="f_provider"><option value="claude">Claude</option><option value="codex">Codex / OpenAI</option><option value="gemini">Gemini</option><option value="grok">Grok</option></select></div>
+              <div><label>Auth 类型</label>
+                <select id="f_auth"><option value="apikey">API Key</option><option value="oauth">OAuth Token</option></select></div>
+              <div class="full"><label>标识 / 邮箱（可选）</label><input id="f_email" placeholder="user@example.com" /></div>
+              <div class="full"><label id="lbl_creds">凭据 JSON</label><textarea id="f_creds" placeholder='{"api_key": "sk-..."}'></textarea></div>
+              <div class="full"><label>代理（可选）</label><input id="f_proxy" placeholder="http://user:pass@host:port" /></div>
+            </div>
+            <button class="btn" onclick="addAccount()">＋ 接入账号</button>
+            <button class="btn ghost" onclick="importCsv()">⬆ 从注册 CSV 导入</button>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:18px">
+          <h2>实时请求流 <span class="hint">最近 50 条</span></h2>
+          <div class="body"><div class="log" id="log"></div></div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- ============ REGISTER ============ -->
+  <section class="view" id="view-register">
+    <div class="grid2">
+      <div>
+        <div class="panel">
+          <h2>发起注册任务</h2>
+          <div class="body">
+            <div class="form-grid">
+              <div><label>Provider</label>
+                <select id="r_provider"><option value="grok">Grok</option><option value="codex">Codex</option><option value="gemini">Gemini</option></select></div>
+              <div><label>数量</label><input id="r_count" type="number" value="1" min="1" max="1000" /></div>
+              <div><label>并发</label><input id="r_conc" type="number" value="1" min="1" max="10" /></div>
+              <div><label>无头模式</label>
+                <select id="r_headless"><option value="true">是</option><option value="false">否（调试）</option></select></div>
+            </div>
+            <div id="r_warning" class="empty" style="display:none; color:var(--amber)"></div>
+            <button class="btn" id="r_btn" onclick="startRegister()">▶ 开始注册</button>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:18px">
+          <h2>历史任务</h2>
+          <div class="body"><div class="feed" id="taskFeed"><span class="ts">尚无任务</span></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>本次实时进度</h2>
+        <div class="body">
+          <div class="progressbar"><div id="r_progress"></div></div>
+          <div class="feed" id="r_live"><span class="ts">等待发起...</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="view" id="view-settings">
+    <div class="sec-title">付费服务凭据（实时生效，存于服务器 /data/settings.json）</div>
+
+    <div class="sect-card">
+      <h3>打码 / 人机验证 <span class="tag tag-miss" id="cap_tag">待配置</span></h3>
+      <div class="form-grid">
+        <div><label>服务商</label>
+          <select id="s_cap_provider"><option value="none">不使用</option><option value="yescaptcha">YesCaptcha</option><option value="twocaptcha">2Captcha</option><option value="capsolver">CapSolver</option></select></div>
+        <div><label>Client Key</label><input id="s_cap_key" type="password" placeholder="服务商 API key" autocomplete="off" /></div>
+      </div>
+      <p class="ts" style="color:var(--muted);font-size:11.5px;margin:8px 0 0">用于过 Cloudflare Turnstile / reCAPTCHA。无此项，注册页会被反爬挡在门外。</p>
+    </div>
+
+    <div class="sect-card">
+      <h3>接码 / 手机验证 <span class="tag tag-miss" id="sms_tag">待配置</span></h3>
+      <div class="form-grid">
+        <div><label>服务商</label>
+          <select id="s_sms_provider"><option value="none">不使用</option><option value="smsactivate">SMS-Activate</option><option value="herosms">HeroSMS</option></select></div>
+        <div><label>国家</label><input id="s_sms_country" value="us" placeholder="us" /></div>
+        <div class="full"><label>API Key</label><input id="s_sms_key" type="password" placeholder="服务商 API key" autocomplete="off" /></div>
+      </div>
+      <p class="ts" style="color:var(--muted);font-size:11.5px;margin:8px 0 0">用于注册时的短信验证码。无此项，需要手机验证的站点无法完成。</p>
+    </div>
+
+    <div class="sect-card">
+      <h3>邮箱后端 <span class="tag tag-miss" id="mail_tag">待配置</span></h3>
+      <div class="form-grid">
+        <div><label>后端</label>
+          <select id="s_mail_backend"><option value="local">本地占位（不收信）</option><option value="moemail">MoeMail</option><option value="cloudflare">Cloudflare Worker</option><option value="duckmail">DuckMail</option></select></div>
+        <div><label>配置 JSON</label><input id="s_mail_config" placeholder='{"api_key":"..."}' /></div>
+      </div>
+    </div>
+
+    <div class="sect-card">
+      <h3>住宅代理 <span class="tag tag-miss" id="proxy_tag">待配置</span></h3>
+      <div class="form-grid">
+        <div><label>模式</label>
+          <select id="s_proxy_mode"><option value="none">不使用</option><option value="static">固定代理</option><option value="pool">动态池 API</option></select></div>
+        <div class="full"><label>代理地址 / 池 API</label><input id="s_proxy_val" placeholder="http://user:pass@host:port 或 池提取 API" /></div>
+      </div>
+      <p class="ts" style="color:var(--muted);font-size:11.5px;margin:8px 0 0">数据中心 IP 注册即被风控；住宅代理让出口像家庭宽带。</p>
+    </div>
+
+    <div class="sect-card">
+      <h3>注册参数</h3>
+      <div class="form-grid">
+        <div><label>无头模式</label><select id="s_headless"><option value="true">是</option><option value="false">否</option></select></div>
+        <div><label>默认并发</label><input id="s_conc" type="number" value="1" min="1" max="10" /></div>
+        <div><label>延迟下限(秒)</label><input id="s_dmin" type="number" value="3" min="0" /></div>
+        <div><label>延迟上限(秒)</label><input id="s_dmax" type="number" value="8" min="0" /></div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="saveSettings()">💾 保存设置（实时生效）</button>
+  </section>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const API = ""; // same origin
+const API = "";
 let knownAccounts = [];
+let settingsCache = {};
 
 function fmtTime(t){ return new Date(t*1000).toLocaleTimeString('zh-CN', {hour12:false}); }
-
-function toast(msg, kind){ 
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'toast show ' + (kind||'');
-  setTimeout(()=> el.className = 'toast', 2600);
+function toast(msg, kind){ const el=document.getElementById('toast'); el.textContent=msg; el.className='toast show '+(kind||''); setTimeout(()=>el.className='toast',2600); }
+function show(v){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('view-'+v).classList.add('active');
+  if(v==='settings') loadSettings();
+  if(v==='register') checkReadiness();
 }
 
+/* ---------------- overview ---------------- */
 async function loadStats(){
-  try {
-    const r = await fetch(API + '/api/stats');
-    const s = await r.json();
-    renderCards(s);
-    renderLog(s.recent_requests);
-  } catch(e){ document.getElementById('liveText').textContent = '连接失败'; }
+  try{ const s=await (await fetch(API+'/api/stats')).json(); renderCards(s); renderLog(s.recent_requests); }
+  catch(e){ document.getElementById('liveText').textContent='连接失败'; }
 }
-
-async function loadAccounts(){
-  const r = await fetch(API + '/api/accounts');
-  knownAccounts = await r.json();
-  renderAccounts();
-}
+async function loadAccounts(){ const a=await (await fetch(API+'/api/accounts')).json(); knownAccounts=a; renderAccounts(); }
 
 function renderCards(s){
-  const order = ['claude','codex','gemini','grok'];
-  const names = {claude:'Claude', codex:'Codex', gemini:'Gemini', grok:'Grok'};
-  const wrap = document.getElementById('cards');
-  wrap.innerHTML = '';
+  const order=['claude','codex','gemini','grok']; const names={claude:'Claude',codex:'Codex',gemini:'Gemini',grok:'Grok'};
+  const wrap=document.getElementById('cards'); wrap.innerHTML='';
   for(const p of order){
-    const d = s.by_provider[p] || {total:0, active:0, dead:0};
-    const activeBadge = d.active>0 ? '<span class="badge b-active">在线</span>' : '<span class="badge b-dead">空</span>';
-    wrap.insertAdjacentHTML('beforeend', `
-      <div class="card">
-        <div class="pname">${names[p]} ${activeBadge}</div>
-        <div class="pcount">${d.active}<span style="font-size:14px;color:var(--muted)"> / ${d.total}</span></div>
-        <div class="psub">${d.dead>0 ? d.dead+' 个失效' : '全部健康'}</div>
-      </div>`);
+    const d=s.by_provider[p]||{total:0,active:0,dead:0};
+    const badge=d.active>0?'<span class="badge b-active">在线</span>':'<span class="badge b-dead">空</span>';
+    wrap.insertAdjacentHTML('beforeend',`<div class="card"><div class="pname">${names[p]} ${badge}</div><div class="pcount">${d.active}<span style="font-size:14px;color:var(--muted)"> / ${d.total}</span></div><div class="psub">${d.dead>0?d.dead+' 个失效':'全部健康'}</div></div>`);
   }
-  document.getElementById('accCount').textContent = `共 ${s.total_accounts} 个 · 在线 ${s.active_accounts}`;
+  document.getElementById('accCount').textContent=`共 ${s.total_accounts} 个 · 在线 ${s.active_accounts}`;
 }
-
 function renderAccounts(){
-  const body = document.getElementById('accBody');
-  const empty = document.getElementById('accEmpty');
-  body.innerHTML = '';
-  if(!knownAccounts.length){ empty.style.display='block'; return; }
-  empty.style.display='none';
+  const body=document.getElementById('accBody'); const empty=document.getElementById('accEmpty'); body.innerHTML='';
+  if(!knownAccounts.length){ empty.style.display='block'; return; } empty.style.display='none';
   for(const a of knownAccounts){
-    const idLabel = a.email || ('#' + a.id);
-    const succ = a.success_count||0, fail = a.fail_count||0;
-    const total = succ+fail;
-    const rate = total? Math.round(succ/total*100) : 100;
-    const sp = `<span class="status-pill s-${a.status}">${a.status}</span>`;
-    body.insertAdjacentHTML('beforeend', `
-      <tr>
-        <td><b>${a.provider}</b></td>
-        <td class="mono">${escapeHtml(idLabel)}</td>
-        <td>${sp}</td>
-        <td>${rate}%</td>
-        <td class="mono">${a.source}</td>
-        <td class="row-actions">
-          <button onclick="toggle(${a.id},'${a.status}')">${a.status==='active'?'停用':'启用'}</button>
-          <button onclick="del(${a.id})">删除</button>
-        </td>
-      </tr>`);
+    const idLabel=a.email||('#'+a.id); const succ=a.success_count||0,fail=a.fail_count||0; const total=succ+fail;
+    const rate=total?Math.round(succ/total*100):100;
+    body.insertAdjacentHTML('beforeend',`<tr><td><b>${a.provider}</b></td><td class="mono">${escapeHtml(idLabel)}</td><td><span class="status-pill s-${a.status}">${a.status}</span></td><td>${rate}%</td><td class="mono">${a.source}</td><td class="row-actions"><button onclick="toggle(${a.id},'${a.status}')">${a.status==='active'?'停用':'启用'}</button><button onclick="del(${a.id})">删除</button></td></tr>`);
   }
 }
-
-function renderLog(reqs){
-  const el = document.getElementById('log');
-  if(!reqs || !reqs.length){ el.innerHTML = '<span class="ts">尚无请求</span>'; return; }
-  el.innerHTML = reqs.slice().reverse().map(r=>{
-    const cls = r.status==='ok'?'ok':'fail';
-    const info = r.account_id? `acct#${r.account_id}` : (r.error||'');
-    return `<div><span class="ts">[${fmtTime(r.ts)}]</span> <span class="${cls}">${r.status.toUpperCase()}</span> ${r.provider||''} ${info} <span class="ts">#${r.req_id||''}</span></div>`;
-  }).join('');
-}
-
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function renderLog(reqs){ const el=document.getElementById('log'); if(!reqs||!reqs.length){el.innerHTML='<span class="ts">尚无请求</span>';return;}
+  el.innerHTML=reqs.slice().reverse().map(r=>`<div><span class="ts">[${fmtTime(r.ts)}]</span> <span class="${r.status==='ok'?'ok':'fail'}">${r.status.toUpperCase()}</span> ${r.provider||''} ${r.account_id?'acct#'+r.account_id:''} <span class="ts">#${r.req_id||''}</span></div>`).join(''); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 async function addAccount(){
-  const provider = document.getElementById('f_provider').value;
-  const auth_type = document.getElementById('f_auth').value;
-  const email = document.getElementById('f_email').value.trim() || null;
-  const proxy = document.getElementById('f_proxy').value.trim() || null;
-  let creds;
-  try { creds = JSON.parse(document.getElementById('f_creds').value); }
-  catch(e){ toast('凭据 JSON 格式错误', 'err'); return; }
-  const r = await fetch(API + '/api/accounts', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({provider, auth_type, email, proxy, creds})
-  });
-  if(r.ok){ toast('账号已接入', 'ok'); document.getElementById('f_creds').value=''; await loadAccounts(); await loadStats(); }
-  else { const e = await r.json().catch(()=>({detail:r.statusText})); toast('失败: '+e.detail, 'err'); }
+  const provider=document.getElementById('f_provider').value, auth_type=document.getElementById('f_auth').value;
+  const email=document.getElementById('f_email').value.trim()||null, proxy=document.getElementById('f_proxy').value.trim()||null;
+  let creds; try{creds=JSON.parse(document.getElementById('f_creds').value);}catch(e){toast('凭据 JSON 格式错误','err');return;}
+  const r=await fetch(API+'/api/accounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider,auth_type,email,proxy,creds})});
+  if(r.ok){toast('账号已接入','ok');document.getElementById('f_creds').value='';await loadAccounts();await loadStats();} else {const e=await r.json().catch(()=>({detail:r.statusText}));toast('失败: '+e.detail,'err');}
 }
+async function importCsv(){ const path=prompt('CSV 路径（容器内）：','/data/export.csv'); if(!path)return;
+  const r=await fetch(API+'/api/import-csv',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path})});
+  if(r.ok){const j=await r.json();toast(`已导入 ${j.imported} 个`,'ok');await loadAccounts();await loadStats();}else toast('导入失败','err'); }
+async function toggle(id,status){ await fetch(API+'/api/accounts/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:status==='active'?'disabled':'active'})}); await loadAccounts(); }
+async function del(id){ if(!confirm('确认删除？'))return; await fetch(API+'/api/accounts/'+id,{method:'DELETE'}); await loadAccounts(); await loadStats(); }
+document.getElementById('f_auth').addEventListener('change',e=>{const lbl=document.getElementById('lbl_creds');const v=e.target.value;lbl.textContent=v==='apikey'?'凭据 JSON  {"api_key":"..."}':'凭据 JSON  {"access_token":"..."}';document.getElementById('f_creds').placeholder=v==='apikey'?'{"api_key":"sk-..."}':'{"access_token":"ey..."}';});
 
-async function importCsv(){
-  const path = prompt('输入 any-auto-register 导出的 CSV 路径（容器内）：', '/data/export.csv');
-  if(!path) return;
-  const r = await fetch(API + '/api/import-csv', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path})});
-  if(r.ok){ const j = await r.json(); toast(`已导入 ${j.imported} 个账号`, 'ok'); await loadAccounts(); await loadStats(); }
-  else toast('导入失败', 'err');
+/* ---------------- settings ---------------- */
+async function loadSettings(){
+  try{ settingsCache=await (await fetch(API+'/api/settings')).json(); }catch(e){ settingsCache={}; }
+  const s=settingsCache; const g=(p,d)=> (s[p]||{})[d] ?? d===undefined?'':d;
+  document.getElementById('s_cap_provider').value=(s.captcha||{}).provider||'none';
+  document.getElementById('s_cap_key').value=(s.captcha||{}).client_key||'';
+  document.getElementById('s_sms_provider').value=(s.sms||{}).provider||'none';
+  document.getElementById('s_sms_country').value=(s.sms||{}).country||'us';
+  document.getElementById('s_sms_key').value=(s.sms||{}).api_key||'';
+  document.getElementById('s_mail_backend').value=(s.email||{}).backend||'local';
+  document.getElementById('s_mail_config').value=JSON.stringify((s.email||{}).config||{});
+  document.getElementById('s_proxy_mode').value=(s.proxy||{}).mode||'none';
+  document.getElementById('s_proxy_val').value=(s.proxy||{}).static||(s.proxy||{}).pool_api||'';
+  document.getElementById('s_headless').value=String((s.registration||{}).headless??true);
+  document.getElementById('s_conc').value=(s.registration||{}).concurrency||1;
+  document.getElementById('s_dmin').value=(s.registration||{}).delay_min||3;
+  document.getElementById('s_dmax').value=(s.registration||{}).delay_max||8;
+  refreshSettingTags();
 }
+function refreshSettingTags(){
+  const cap=document.getElementById('s_cap_provider').value; setTag('cap_tag', cap!=='none');
+  const sms=document.getElementById('s_sms_provider').value; setTag('sms_tag', sms!=='none');
+  const mail=document.getElementById('s_mail_backend').value; setTag('mail_tag', mail!=='local');
+  const pm=document.getElementById('s_proxy_mode').value; setTag('proxy_tag', pm!=='none');
+}
+function setTag(id, ok){ const el=document.getElementById(id); if(ok){el.textContent='已配置';el.className='tag tag-ok';}else{el.textContent='待配置';el.className='tag tag-miss';} }
 
-async function toggle(id, status){
-  await fetch(API + '/api/accounts/'+id, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status: status==='active'?'disabled':'active'})});
-  await loadAccounts();
+async function saveSettings(){
+  const patch={
+    captcha:{provider:document.getElementById('s_cap_provider').value, client_key:document.getElementById('s_cap_key').value},
+    sms:{provider:document.getElementById('s_sms_provider').value, country:document.getElementById('s_sms_country').value, api_key:document.getElementById('s_sms_key').value},
+    email:{backend:document.getElementById('s_mail_backend').value, config:safeJson(document.getElementById('s_mail_config').value)},
+    proxy:proxyPatch(),
+    registration:{headless:document.getElementById('s_headless').value==='true', concurrency:Number(document.getElementById('s_conc').value), delay_min:Number(document.getElementById('s_dmin').value), delay_max:Number(document.getElementById('s_dmax').value)}
+  };
+  const r=await fetch(API+'/api/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});
+  if(r.ok){toast('设置已保存，实时生效','ok');refreshSettingTags();checkReadiness();} else toast('保存失败','err');
 }
-async function del(id){
-  if(!confirm('确认删除该账号？')) return;
-  await fetch(API + '/api/accounts/'+id, {method:'DELETE'});
+function proxyPatch(){ const m=document.getElementById('s_proxy_mode').value; const v=document.getElementById('s_proxy_val').value.trim();
+  if(m==='static')return{mode:m,static:v}; if(m==='pool')return{mode:m,pool_api:v}; return{mode:'none'}; }
+function safeJson(s){ try{return JSON.parse(s||'{}');}catch(e){toast('邮箱配置 JSON 错误','err');return{};} }
+
+/* ---------------- register ---------------- */
+async function checkReadiness(){
+  try{ const s=await (await fetch(API+'/api/settings')).json(); settingsCache=s; }catch(e){}
+  const cap=(settingsCache.captcha||{}).provider!=='none';
+  const sms=(settingsCache.sms||{}).provider!=='none';
+  const mail=(settingsCache.email||{}).backend!=='local';
+  const proxy=(settingsCache.proxy||{}).mode!=='none';
+  const w=document.getElementById('r_warning'); const missing=[];
+  if(!mail)missing.push('邮箱后端');
+  if(!cap)missing.push('打码服务');
+  if(!sms)missing.push('接码服务');
+  if(!proxy)missing.push('住宅代理');
+  if(missing.length){ w.style.display='block'; w.innerHTML='⚠ 未配置：'+missing.join('、')+' — 站点反爬会拦截，注册大概率失败。请先到「设置」填写。'; }
+  else { w.style.display='none'; }
+}
+async function startRegister(){
+  const provider=document.getElementById('r_provider').value;
+  const count=Number(document.getElementById('r_count').value);
+  const concurrency=Number(document.getElementById('r_conc').value);
+  document.getElementById('r_btn').disabled=true;
+  document.getElementById('r_live').innerHTML='<span class="ts">['+fmtTime(Date.now()/1000)+'] 任务已发起 '+provider+' × '+count+' ...</span>';
+  try{
+    const r=await fetch('/reg/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider,count,concurrency})});
+    const j=await r.json();
+    const done=j.succeeded||0;
+    document.getElementById('r_progress').style.width=Math.round(done/count*100)+'%';
+    document.getElementById('r_live').insertAdjacentHTML('beforeend',
+      `<div class="${j.succeeded>0?'ok':'fail'}">[${fmtTime(Date.now()/1000)}] 完成：成功 ${j.succeeded} / 请求 ${j.requested}</div>`);
+    (j.results||[]).forEach(rs=>{
+      document.getElementById('r_live').insertAdjacentHTML('beforeend',
+        `<div class="${rs.ok?'ok':'fail'}">　${rs.ok?'✓':'✗'} ${rs.email||''} ${rs.error||rs.note||''}</div>`);
+    });
+    await loadTaskFeed();
+  }catch(e){ document.getElementById('r_live').insertAdjacentHTML('beforeend',`<div class="fail">[${fmtTime(Date.now()/1000)}] 请求异常: ${e}</div>`); }
+  document.getElementById('r_btn').disabled=false;
   await loadAccounts(); await loadStats();
 }
+async function loadTaskFeed(){
+  let prog=[];
+  try{ prog=await (await fetch('/reg/api/progress')).json(); }catch(e){}
+  const feed=document.getElementById('taskFeed');
+  if(!prog.length){feed.innerHTML='<span class="ts">尚无任务</span>';return;}
+  feed.innerHTML=prog.slice().reverse().map(p=>`<div class="${p.level==='ok'?'ok':p.level==='fail'?'fail':p.level==='step'?'step':'ts'}"><span class="ts">[${fmtTime(p.ts)}]</span> ${p.msg}</div>`).join('');
+}
 
-document.getElementById('f_auth').addEventListener('change', e=>{
-  const lbl = document.getElementById('lbl_creds');
-  lbl.textContent = e.target.value==='apikey' ? '凭据 JSON  {"api_key":"..."}' : '凭据 JSON  {"access_token":"..."}';
-  document.getElementById('f_creds').placeholder = e.target.value==='apikey' ? '{"api_key":"sk-..."}' : '{"access_token":"ey..."}';
-});
-
-// initial + poll
+/* ---------------- boot ---------------- */
 loadStats(); loadAccounts();
-setInterval(async ()=>{ await loadStats(); await loadAccounts(); }, 4000);
+setInterval(async()=>{ await loadStats(); await loadAccounts(); }, 4000);
 </script>
 </body>
 </html>
