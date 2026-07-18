@@ -1,0 +1,51 @@
+# Auto-Deploy: 注册 · 接入 · 中转 · 可观测
+#
+# 四层一体（本地 Docker 部署）:
+#   registration  自动注册 Grok / Codex / Gemini（Claude 走手动接入）
+#   relay         OpenAI 兼容中转，账号池轮询 + 故障转移
+#   dashboard     可视化控制台（账号状态 / 实时请求流 / 接入）
+#   shared volume /data 存放 accounts.db（三层共用同一数据源）
+#
+# 启动:  docker compose up -d --build
+# 面板:  http://localhost:8080
+# 中转:  http://localhost:8000/v1/chat/completions
+# 注册:  docker compose exec registration python service.py --provider grok --count 1
+
+services:
+  relay:
+    build: ./relay
+    ports:
+      - "8000:8000"
+    volumes:
+      - data:/data
+    restart: unless-stopped
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "8080:8080"
+    environment:
+      RELAY_URL: "http://relay:8000"
+    depends_on:
+      - relay
+    restart: unless-stopped
+
+  registration:
+    build: ./registration
+    volumes:
+      - data:/data
+    environment:
+      DB_PATH: "/data/accounts.db"
+      MAIL_BACKEND: "${MAIL_BACKEND:-local}"
+      REG_PROXY: "${REG_PROXY:-}"
+      SMS_API_KEY: "${SMS_API_KEY:-}"
+      SMS_COUNTRY: "${SMS_COUNTRY:-us}"
+      HEADLESS: "${HEADLESS:-true}"
+    depends_on:
+      - relay
+    restart: "no"
+    profiles:
+      - reg
+
+volumes:
+  data:

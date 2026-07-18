@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 账号中枢 · 控制台</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --bg-soft: #121723;
+    --panel: #161c2b;
+    --panel-2: #1b2233;
+    --border: #232c40;
+    --text: #e6ebf5;
+    --muted: #8a96ad;
+    --accent: #6ea8fe;
+    --accent-2: #7c5cff;
+    --green: #3ddc97;
+    --amber: #ffb454;
+    --red: #ff6b6b;
+    --radius: 14px;
+    --shadow: 0 8px 30px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "SF Pro Display", "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, #1a2236 0%, var(--bg) 55%);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 22px 64px; }
+
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 26px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo {
+    width: 38px; height: 38px; border-radius: 11px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 6px 18px rgba(124,92,255,.4);
+    display: grid; place-items: center; font-weight: 800; color: #fff; font-size: 18px;
+  }
+  .brand h1 { font-size: 19px; margin: 0; letter-spacing: .3px; }
+  .brand p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+  .live {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px;
+    color: var(--muted); background: var(--panel); border: 1px solid var(--border);
+    padding: 7px 13px; border-radius: 999px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 0 0 rgba(61,220,151,.6); animation: pulse 1.8s infinite; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(61,220,151,.5); }
+    70% { box-shadow: 0 0 0 7px rgba(61,220,151,0); }
+    100% { box-shadow: 0 0 0 0 rgba(61,220,151,0); }
+  }
+
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  @media (max-width: 860px){ .cards { grid-template-columns: repeat(2,1fr); } }
+  .card {
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 17px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .card::after {
+    content:""; position:absolute; inset:0; border-radius: var(--radius);
+    background: radial-gradient(120px 60px at 100% 0%, rgba(110,168,254,.10), transparent 70%);
+    pointer-events:none;
+  }
+  .card .pname { font-size: 13px; color: var(--muted); display:flex; align-items:center; gap:8px; }
+  .card .pcount { font-size: 30px; font-weight: 750; margin-top: 8px; letter-spacing:.5px; }
+  .card .psub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight:600; }
+  .b-active { background: rgba(61,220,151,.14); color: var(--green); }
+  .b-dead { background: rgba(255,107,107,.14); color: var(--red); }
+
+  .grid2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 18px; }
+  @media (max-width: 980px){ .grid2 { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .panel h2 {
+    font-size: 14px; margin: 0; padding: 15px 18px; border-bottom: 1px solid var(--border);
+    display:flex; align-items:center; justify-content: space-between; color: var(--text);
+  }
+  .panel h2 .hint { font-size: 11.5px; color: var(--muted); font-weight: 400; }
+  .panel .body { padding: 8px 14px 14px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 10px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing:.4px; }
+  tbody tr:hover { background: rgba(110,168,254,.05); }
+  td .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; color: var(--muted); }
+  .status-pill { font-size: 11px; padding: 2px 9px; border-radius: 999px; font-weight:600; }
+  .s-active { background: rgba(61,220,151,.14); color: var(--green); }
+  .s-dead { background: rgba(255,107,107,.14); color: var(--red); }
+  .s-disabled { background: rgba(255,180,84,.14); color: var(--amber); }
+  .s-pending { background: rgba(138,150,173,.16); color: var(--muted); }
+  .row-actions button {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 8px; padding: 4px 9px; font-size: 11.5px; cursor: pointer; margin-right:4px;
+    transition: .15s;
+  }
+  .row-actions button:hover { border-color: var(--accent); color: var(--accent); }
+
+  .log {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px;
+    background: #0a0d14; border-radius: 10px; padding: 12px; height: 320px; overflow-y: auto;
+    color: #b9c4d8; line-height: 1.55;
+  }
+  .log .ok { color: var(--green); }
+  .log .fail { color: var(--red); }
+  .log .ts { color: #4d5872; }
+
+  /* Add account form */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .form-grid .full { grid-column: 1 / -1; }
+  label { font-size: 11.5px; color: var(--muted); display:block; margin-bottom: 5px; }
+  input, select, textarea {
+    width: 100%; background: var(--bg-soft); border: 1px solid var(--border);
+    color: var(--text); border-radius: 9px; padding: 9px 11px; font-size: 13px;
+    font-family: inherit; outline: none; transition: .15s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(110,168,254,.15); }
+  textarea { resize: vertical; min-height: 70px; font-family: ui-monospace, Menlo, monospace; }
+  .btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff; border: none; border-radius: 10px; padding: 11px 16px; font-size: 13.5px;
+    font-weight: 650; cursor: pointer; margin-top: 12px; width: 100%; transition: .15s;
+    box-shadow: 0 6px 18px rgba(124,92,255,.35);
+  }
+  .btn:hover { filter: brightness(1.07); }
+  .btn:active { transform: translateY(1px); }
+  .btn.ghost { background: var(--panel-2); box-shadow:none; border:1px solid var(--border); color: var(--text); }
+
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
+    padding: 12px 20px; border-radius: 11px; font-size: 13px; box-shadow: var(--shadow);
+    opacity: 0; pointer-events: none; transition: .25s; z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.ok { border-color: var(--green); }
+  .toast.err { border-color: var(--red); }
+
+  .empty { color: var(--muted); text-align:center; padding: 26px; font-size: 13px; }
+  .sec-title { font-size: 12px; color: var(--muted); margin: 18px 2px 10px; letter-spacing:.4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <h1>AI 账号中枢</h1>
+        <p>注册 · 接入 · 中转 · 可观测</p>
+      </div>
+    </div>
+    <div class="live"><span class="dot"></span><span id="liveText">实时连接中</span></div>
+  </header>
+
+  <section class="cards" id="cards"></section>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>账号池 <span class="hint" id="accCount"></span></h2>
+      <div class="body">
+        <table>
+          <thead>
+            <tr><th>Provider</th><th>标识</th><th>状态</th><th>成功率</th><th>来源</th><th></th></tr>
+          </thead>
+          <tbody id="accBody"></tbody>
+        </table>
+        <div class="empty" id="accEmpty" style="display:none">暂无账号 — 在右侧添加或等待注册模块推送</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h2>接入账号</h2>
+        <div class="body">
+          <div class="form-grid">
+            <div>
+              <label>Provider</label>
+              <select id="f_provider">
+                <option value="claude">Claude</option>
+                <option value="codex">Codex / OpenAI</option>
+                <option value="gemini">Gemini</option>
+                <option value="grok">Grok</option>
+              </select>
+            </div>
+            <div>
+              <label>Auth 类型</label>
+              <select id="f_auth">
+                <option value="apikey">API Key</option>
+                <option value="oauth">OAuth Token</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>标识 / 邮箱（可选）</label>
+              <input id="f_email" placeholder="user@example.com" />
+            </div>
+            <div class="full">
+              <label id="lbl_creds">凭据 JSON</label>
+              <textarea id="f_creds" placeholder='{"api_key": "sk-..."}'></textarea>
+            </div>
+            <div class="full">
+              <label>代理（可选）</label>
+              <input id="f_proxy" placeholder="http://user:pass@host:port" />
+            </div>
+          </div>
+          <button class="btn" onclick="addAccount()">＋ 接入账号</button>
+          <button class="btn ghost" onclick="importCsv()">⬆ 从注册模块 CSV 导入</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:18px">
+        <h2>实时请求流 <span class="hint">最近 50 条</span></h2>
+        <div class="body"><div class="log" id="log"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = ""; // same origin
+let knownAccounts = [];
+
+function fmtTime(t){ return new Date(t*1000).toLocaleTimeString('zh-CN', {hour12:false}); }
+
+function toast(msg, kind){ 
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = 'toast show ' + (kind||'');
+  setTimeout(()=> el.className = 'toast', 2600);
+}
+
+async function loadStats(){
+  try {
+    const r = await fetch(API + '/api/stats');
+    const s = await r.json();
+    renderCards(s);
+    renderLog(s.recent_requests);
+  } catch(e){ document.getElementById('liveText').textContent = '连接失败'; }
+}
+
+async function loadAccounts(){
+  const r = await fetch(API + '/api/accounts');
+  knownAccounts = await r.json();
+  renderAccounts();
+}
+
+function renderCards(s){
+  const order = ['claude','codex','gemini','grok'];
+  const names = {claude:'Claude', codex:'Codex', gemini:'Gemini', grok:'Grok'};
+  const wrap = document.getElementById('cards');
+  wrap.innerHTML = '';
+  for(const p of order){
+    const d = s.by_provider[p] || {total:0, active:0, dead:0};
+    const activeBadge = d.active>0 ? '<span class="badge b-active">在线</span>' : '<span class="badge b-dead">空</span>';
+    wrap.insertAdjacentHTML('beforeend', `
+      <div class="card">
+        <div class="pname">${names[p]} ${activeBadge}</div>
+        <div class="pcount">${d.active}<span style="font-size:14px;color:var(--muted)"> / ${d.total}</span></div>
+        <div class="psub">${d.dead>0 ? d.dead+' 个失效' : '全部健康'}</div>
+      </div>`);
+  }
+  document.getElementById('accCount').textContent = `共 ${s.total_accounts} 个 · 在线 ${s.active_accounts}`;
+}
+
+function renderAccounts(){
+  const body = document.getElementById('accBody');
+  const empty = document.getElementById('accEmpty');
+  body.innerHTML = '';
+  if(!knownAccounts.length){ empty.style.display='block'; return; }
+  empty.style.display='none';
+  for(const a of knownAccounts){
+    const idLabel = a.email || ('#' + a.id);
+    const succ = a.success_count||0, fail = a.fail_count||0;
+    const total = succ+fail;
+    const rate = total? Math.round(succ/total*100) : 100;
+    const sp = `<span class="status-pill s-${a.status}">${a.status}</span>`;
+    body.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td><b>${a.provider}</b></td>
+        <td class="mono">${escapeHtml(idLabel)}</td>
+        <td>${sp}</td>
+        <td>${rate}%</td>
+        <td class="mono">${a.source}</td>
+        <td class="row-actions">
+          <button onclick="toggle(${a.id},'${a.status}')">${a.status==='active'?'停用':'启用'}</button>
+          <button onclick="del(${a.id})">删除</button>
+        </td>
+      </tr>`);
+  }
+}
+
+function renderLog(reqs){
+  const el = document.getElementById('log');
+  if(!reqs || !reqs.length){ el.innerHTML = '<span class="ts">尚无请求</span>'; return; }
+  el.innerHTML = reqs.slice().reverse().map(r=>{
+    const cls = r.status==='ok'?'ok':'fail';
+    const info = r.account_id? `acct#${r.account_id}` : (r.error||'');
+    return `<div><span class="ts">[${fmtTime(r.ts)}]</span> <span class="${cls}">${r.status.toUpperCase()}</span> ${r.provider||''} ${info} <span class="ts">#${r.req_id||''}</span></div>`;
+  }).join('');
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+async function addAccount(){
+  const provider = document.getElementById('f_provider').value;
+  const auth_type = document.getElementById('f_auth').value;
+  const email = document.getElementById('f_email').value.trim() || null;
+  const proxy = document.getElementById('f_proxy').value.trim() || null;
+  let creds;
+  try { creds = JSON.parse(document.getElementById('f_creds').value); }
+  catch(e){ toast('凭据 JSON 格式错误', 'err'); return; }
+  const r = await fetch(API + '/api/accounts', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({provider, auth_type, email, proxy, creds})
+  });
+  if(r.ok){ toast('账号已接入', 'ok'); document.getElementById('f_creds').value=''; await loadAccounts(); await loadStats(); }
+  else { const e = await r.json().catch(()=>({detail:r.statusText})); toast('失败: '+e.detail, 'err'); }
+}
+
+async function importCsv(){
+  const path = prompt('输入 any-auto-register 导出的 CSV 路径（容器内）：', '/data/export.csv');
+  if(!path) return;
+  const r = await fetch(API + '/api/import-csv', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({path})});
+  if(r.ok){ const j = await r.json(); toast(`已导入 ${j.imported} 个账号`, 'ok'); await loadAccounts(); await loadStats(); }
+  else toast('导入失败', 'err');
+}
+
+async function toggle(id, status){
+  await fetch(API + '/api/accounts/'+id, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({status: status==='active'?'disabled':'active'})});
+  await loadAccounts();
+}
+async function del(id){
+  if(!confirm('确认删除该账号？')) return;
+  await fetch(API + '/api/accounts/'+id, {method:'DELETE'});
+  await loadAccounts(); await loadStats();
+}
+
+document.getElementById('f_auth').addEventListener('change', e=>{
+  const lbl = document.getElementById('lbl_creds');
+  lbl.textContent = e.target.value==='apikey' ? '凭据 JSON  {"api_key":"..."}' : '凭据 JSON  {"access_token":"..."}';
+  document.getElementById('f_creds').placeholder = e.target.value==='apikey' ? '{"api_key":"sk-..."}' : '{"access_token":"ey..."}';
+});
+
+// initial + poll
+loadStats(); loadAccounts();
+setInterval(async ()=>{ await loadStats(); await loadAccounts(); }, 4000);
+</script>
+</body>
+</html>
